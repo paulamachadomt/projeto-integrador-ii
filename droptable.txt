@@ -1,0 +1,2 @@
+drop table apartamento;
+drop table morador;
