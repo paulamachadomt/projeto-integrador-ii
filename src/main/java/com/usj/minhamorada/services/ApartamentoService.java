@@ -11,60 +11,70 @@ import com.usj.minhamorada.repositories.ApartamentoRepository;
 public class ApartamentoService {
 
 	@Autowired
-	private ApartamentoRepository apartamentoRepository;	
+	private ApartamentoRepository apartamentoRepository;
 
 	private String statuscode = "200";
 
-	public DTO cadastrarApartamento(DTO requestDTO) {
+	public DTO cadastrarApartamento(DTO request) {
 		try {
-			isPresentNumeroApartamento(requestDTO);
-			Apartamento apartamento = requestDTO.getApartamento();			
-			apartamento = apartamentoRepository.save(apartamento);			
-			verificaCadastroApto(apartamento);
-			return montaResposta(apartamento, "201", "Apartamento cadastrado com sucesso!");
+			throwExceptionIfNumeroApartamentoIsNotPresent(request);
+			Apartamento apartamento = request.getApartamento();
+			apartamento = apartamentoRepository.save(apartamento);
+			throwExceptionIfIdApartamentoIsNotPresent(apartamento);
+			statuscode = "201";
+			return response(apartamento, statuscode, "Apartamento cadastrado com sucesso!");
 
 		} catch (Exception e) {
-			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return response(statuscode, e.getMessage());
 		}
 
 	}
-	
+
 	public DTO carregarDadosApartamento(Long id) throws Exception {
 		try {
-			Apartamento apartamento = readApartamentoById(id);			
-			return montaResposta(apartamento, "200", "Apartamento encontrado com sucesso!");
+			Apartamento apartamento = readApartamentoById(id);
+			return response(apartamento, "200", "Apartamento encontrado com sucesso!");
 		} catch (Exception e) {
-			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
-		}		
+			return response(statuscode, e.getMessage());
+		}
 	}
-	
-	public DTO atualizarDadosApartamento(Long id, DTO requestDTO) {
+
+	public DTO atualizarDadosApartamento(Long id, DTO request) {
 		try {
 			Apartamento apartamento = readApartamentoById(id);
-			apartamento.setBlocoApto(requestDTO.getApartamento().getBlocoApto());
-			apartamento.setNumeroApto(requestDTO.getApartamento().getNumeroApto());
-			apartamento.setVagaGaragem(requestDTO.getApartamento().getVagaGaragem());
-			apartamento.setMorador(requestDTO.getApartamento().getMorador());
+			apartamento.setBlocoApto(request.getApartamento().getBlocoApto());
+			apartamento.setNumeroApto(request.getApartamento().getNumeroApto());
+			apartamento.setVagaGaragem(request.getApartamento().getVagaGaragem());
+			apartamento.setMorador(request.getApartamento().getMorador());
 			apartamentoRepository.save(apartamento);
-			return montaResposta(apartamento, "200", "Apartamento atualizado com sucesso!");			
-			
+			statuscode = "200";
+			return response(apartamento, statuscode, "Apartamento atualizado com sucesso!");
+
 		} catch (Exception e) {
-			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return response(statuscode, e.getMessage());
 		}
-		
+
 	}
-		
+
 	public DTO deletarApartamento(Long id) throws Exception {
 		try {
 			Apartamento apartamento = readApartamentoById(id);
+			throwExceptionIfResidentIsPresent(apartamento);
 			apartamentoRepository.deleteById(id);
-			return montaResposta("200", "Apartamento deletado com sucesso!");			
+			statuscode = "200";
+			return response(statuscode, "Apartamento deletado com sucesso!");
 		} catch (Exception e) {
-			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return response(statuscode, e.getMessage());
 		}
 	}
-	
-	//Busca um apartamento na base de dados através do id
+
+	void throwExceptionIfResidentIsPresent(Apartamento apartamento) throws Exception {
+		if (!(apartamento.getMorador() == null)) {
+			statuscode = "401";
+			throw new Exception("Alerta! Há um morador cadastrado para esse apartamento!");
+		}
+	}
+
 	public Apartamento readApartamentoById(Long id) throws Exception {
 		try {
 			return apartamentoRepository.findById(id).get();
@@ -74,36 +84,26 @@ public class ApartamentoService {
 		}
 	}
 
-	//Verifica se o apartamento possui número, já que é um campo obrigatório
-	boolean isPresentNumeroApartamento(DTO requestDTO) throws Exception {
-		if (requestDTO.getApartamento().getNumeroApto() == null) {
+	void throwExceptionIfNumeroApartamentoIsNotPresent(DTO request) throws Exception {
+		if (request.getApartamento().getNumeroApto() == null) {
 			statuscode = "400";
 			throw new Exception("Necessário inserir número do apartamento!");
 		}
-		return true;
 	}
 
-	//Verifica se o apartamento foi cadastrado com sucesso através do id
-	boolean verificaCadastroApto(Apartamento apartamento) throws Exception {
+	void throwExceptionIfIdApartamentoIsNotPresent(Apartamento apartamento) throws Exception {
 		if (apartamento.getId() == null) {
 			statuscode = "500";
 			throw new Exception("Ocorreu uma falha. Tente novamente mais tarde!");
 		}
-		return true;
 	}
-	
-	DTO montaResposta(Apartamento apartamento, String statuscode, String mensagem){
+
+	DTO response(Apartamento apartamento, String statuscode, String mensagem) {
 		return DTO.builder().apartamento(apartamento).statusCode(statuscode).mensagem(mensagem).build();
 	}
-	DTO montaResposta(String statuscode, String mensagem){
+
+	DTO response(String statuscode, String mensagem) {
 		return DTO.builder().statusCode(statuscode).mensagem(mensagem).build();
 	}
-
-	
-
-	
-
-
-
 
 }
