@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -54,10 +55,25 @@ public class Morador  {
 	@Column (name = "dataNascimento")
 	private String dataNascimento;
 	
-	@OneToOne(mappedBy = "morador", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn (name = "apartamento_id")
 	@JsonIgnoreProperties("morador")
 	@ToString.Exclude
 	private Apartamento apartamento;
+		
+	@JsonIgnore
+	public boolean isEmptyCPF() {
+		return (cpf == null) ? true : false;			
+	}
+	
+	@JsonIgnore
+	public boolean isEmptyNome() {
+		return (nome == null) ? true : false;			
+	}
+	
+	@JsonIgnore
+	public boolean isEmptyTelefone() {
+		return (telefone == null) ? true : false;			
+	}
 
 }

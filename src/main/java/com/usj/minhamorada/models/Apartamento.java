@@ -46,7 +46,7 @@ public class Apartamento  {
 	@Column (name = "vagaGaragem")
 	private String vagaGaragem;
 	
-	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false)
+	@OneToOne(mappedBy = "apartamento", cascade = CascadeType.PERSIST)
 	@JoinColumn (name = "morador_id")
 	@JsonIgnoreProperties("apartamento")
 	@ToString.Exclude

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.usj.minhamorada.models.Apartamento;
-import com.usj.minhamorada.models.dto.RequestResponseDTO;
+import com.usj.minhamorada.models.dto.DTO;
 import com.usj.minhamorada.repositories.ApartamentoRepository;
 
 @Service
@@ -15,30 +15,30 @@ public class ApartamentoService {
 
 	private String statuscode = "200";
 
-	public RequestResponseDTO cadastrarApartamento(RequestResponseDTO requestDTO) {
+	public DTO cadastrarApartamento(DTO requestDTO) {
 		try {
 			isPresentNumeroApartamento(requestDTO);
-			Apartamento apartamento = requestDTO.getApartamento();
-			apartamento = apartamentoRepository.save(apartamento);
+			Apartamento apartamento = requestDTO.getApartamento();			
+			apartamento = apartamentoRepository.save(apartamento);			
 			verificaCadastroApto(apartamento);
 			return montaResposta(apartamento, "201", "Apartamento cadastrado com sucesso!");
 
 		} catch (Exception e) {
-			return RequestResponseDTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
 		}
 
 	}
 	
-	public RequestResponseDTO carregarDadosApartamento(Long id) throws Exception {
+	public DTO carregarDadosApartamento(Long id) throws Exception {
 		try {
 			Apartamento apartamento = readApartamentoById(id);			
 			return montaResposta(apartamento, "200", "Apartamento encontrado com sucesso!");
 		} catch (Exception e) {
-			return RequestResponseDTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
 		}		
 	}
 	
-	public RequestResponseDTO atualizarDadosApartamento(Long id, RequestResponseDTO requestDTO) {
+	public DTO atualizarDadosApartamento(Long id, DTO requestDTO) {
 		try {
 			Apartamento apartamento = readApartamentoById(id);
 			apartamento.setBlocoApto(requestDTO.getApartamento().getBlocoApto());
@@ -49,23 +49,23 @@ public class ApartamentoService {
 			return montaResposta(apartamento, "200", "Apartamento atualizado com sucesso!");			
 			
 		} catch (Exception e) {
-			return RequestResponseDTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
 		}
 		
 	}
 		
-	public RequestResponseDTO deletarApartamento(Long id) throws Exception {
+	public DTO deletarApartamento(Long id) throws Exception {
 		try {
 			Apartamento apartamento = readApartamentoById(id);
 			apartamentoRepository.deleteById(id);
 			return montaResposta("200", "Apartamento deletado com sucesso!");			
 		} catch (Exception e) {
-			return RequestResponseDTO.builder().statusCode(statuscode).error(e.getMessage()).build();
+			return DTO.builder().statusCode(statuscode).error(e.getMessage()).build();
 		}
 	}
 	
 	//Busca um apartamento na base de dados através do id
-	Apartamento readApartamentoById(Long id) throws Exception {
+	public Apartamento readApartamentoById(Long id) throws Exception {
 		try {
 			return apartamentoRepository.findById(id).get();
 		} catch (Exception e) {
@@ -75,7 +75,7 @@ public class ApartamentoService {
 	}
 
 	//Verifica se o apartamento possui número, já que é um campo obrigatório
-	boolean isPresentNumeroApartamento(RequestResponseDTO requestDTO) throws Exception {
+	boolean isPresentNumeroApartamento(DTO requestDTO) throws Exception {
 		if (requestDTO.getApartamento().getNumeroApto() == null) {
 			statuscode = "400";
 			throw new Exception("Necessário inserir número do apartamento!");
@@ -92,11 +92,11 @@ public class ApartamentoService {
 		return true;
 	}
 	
-	RequestResponseDTO montaResposta(Apartamento apartamento, String statuscode, String mensagem){
-		return RequestResponseDTO.builder().apartamento(apartamento).statusCode(statuscode).mensagem(mensagem).build();
+	DTO montaResposta(Apartamento apartamento, String statuscode, String mensagem){
+		return DTO.builder().apartamento(apartamento).statusCode(statuscode).mensagem(mensagem).build();
 	}
-	RequestResponseDTO montaResposta(String statuscode, String mensagem){
-		return RequestResponseDTO.builder().statusCode(statuscode).mensagem(mensagem).build();
+	DTO montaResposta(String statuscode, String mensagem){
+		return DTO.builder().statusCode(statuscode).mensagem(mensagem).build();
 	}
 
 	
