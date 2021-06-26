@@ -1,6 +1,7 @@
 package com.usj.minhamorada.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,21 +21,25 @@ public class ApartamentoController {
 		@Autowired
 		ApartamentoService apartamentoService;
 		
+		@CrossOrigin
 		@PostMapping
 		public DTO create(@RequestBody DTO requestDTO) {
 			return apartamentoService.cadastrarApartamento(requestDTO);
 		}
 		
+		@CrossOrigin
 		@GetMapping(value="/{id}")
 		public DTO read(@PathVariable Long id) throws Exception {
 			return apartamentoService.carregarDadosApartamento(id);			
 		}
 		
+		@CrossOrigin
 		@PutMapping(value="/{id}")
 		public DTO update(@PathVariable Long id, @RequestBody DTO requestDTO) {
 			return apartamentoService.atualizarDadosApartamento(id, requestDTO);
 		}
-			
+		
+		@CrossOrigin
 		@DeleteMapping(value="/{id}")
 		public DTO delete(@PathVariable Long id) throws Exception {
 			return apartamentoService.deletarApartamento(id);
