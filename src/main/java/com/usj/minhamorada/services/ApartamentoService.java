@@ -1,9 +1,13 @@
 package com.usj.minhamorada.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.usj.minhamorada.models.Apartamento;
+import com.usj.minhamorada.models.Morador;
 import com.usj.minhamorada.models.dto.DTO;
 import com.usj.minhamorada.repositories.ApartamentoRepository;
 
@@ -101,9 +105,32 @@ public class ApartamentoService {
 	DTO response(Apartamento apartamento, String statuscode, String mensagem) {
 		return DTO.builder().apartamento(apartamento).statusCode(statuscode).mensagem(mensagem).build();
 	}
+	DTO response(List<Apartamento> listaApartamento, String statuscode, String mensagem) {
+		return DTO.builder().listaApartamentos(listaApartamento).statusCode(statuscode).mensagem(mensagem).build();
+	}
 
 	DTO response(String statuscode, String mensagem) {
 		return DTO.builder().statusCode(statuscode).mensagem(mensagem).build();
+	}
+
+	public DTO listarApartamentos() {
+		try {
+			List<Apartamento> listaApartamentos = new ArrayList<Apartamento>();
+			listaApartamentos = apartamentoRepository.findAll();
+			throwExceptionIfApartamentListIsEmpty(listaApartamentos);
+			statuscode = "200";
+			return response(listaApartamentos, statuscode, "Lista de moradores encontrada com sucesso!");
+		} catch (Exception e) {
+			return response(statuscode, e.getMessage());
+		} 
+	}
+	
+	
+	void throwExceptionIfApartamentListIsEmpty(List<Apartamento> listaApartamentos) throws Exception {
+		if(listaApartamentos.isEmpty()) {
+			statuscode = "200";
+			throw new Exception("Lista de apartamentos está vazia!");
+		}
 	}
 
 }

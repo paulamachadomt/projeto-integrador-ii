@@ -26,5 +26,6 @@ public class DTO {
 	private String mensagem;
 	private String error;	
 	private List<Morador> listaMoradores; 
+	private List<Apartamento> listaApartamentos; 
 	
 }

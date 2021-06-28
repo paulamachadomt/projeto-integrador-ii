@@ -16,33 +16,39 @@ import com.usj.minhamorada.services.ApartamentoService;
 
 @RestController
 @RequestMapping("/apartamentos")
-public class ApartamentoController {		
+public class ApartamentoController {
 
-		@Autowired
-		ApartamentoService apartamentoService;
-		
-		@CrossOrigin
-		@PostMapping
-		public DTO create(@RequestBody DTO requestDTO) {
-			return apartamentoService.cadastrarApartamento(requestDTO);
-		}
-		
-		@CrossOrigin
-		@GetMapping(value="/{id}")
-		public DTO read(@PathVariable Long id) throws Exception {
-			return apartamentoService.carregarDadosApartamento(id);			
-		}
-		
-		@CrossOrigin
-		@PutMapping(value="/{id}")
-		public DTO update(@PathVariable Long id, @RequestBody DTO requestDTO) {
-			return apartamentoService.atualizarDadosApartamento(id, requestDTO);
-		}
-		
-		@CrossOrigin
-		@DeleteMapping(value="/{id}")
-		public DTO delete(@PathVariable Long id) throws Exception {
-			return apartamentoService.deletarApartamento(id);
-		}
+	@Autowired
+	ApartamentoService apartamentoService;
+
+	@CrossOrigin
+	@PostMapping
+	public DTO create(@RequestBody DTO requestDTO) {
+		return apartamentoService.cadastrarApartamento(requestDTO);
+	}
+
+	@CrossOrigin
+	@GetMapping(value = "/{id}")
+	public DTO read(@PathVariable Long id) throws Exception {
+		return apartamentoService.carregarDadosApartamento(id);
+	}
+
+	@CrossOrigin
+	@PutMapping(value = "/{id}")
+	public DTO update(@PathVariable Long id, @RequestBody DTO requestDTO) {
+		return apartamentoService.atualizarDadosApartamento(id, requestDTO);
+	}
+
+	@CrossOrigin
+	@DeleteMapping(value = "/{id}")
+	public DTO delete(@PathVariable Long id) throws Exception {
+		return apartamentoService.deletarApartamento(id);
+	}
+
+	@CrossOrigin
+	@GetMapping("/")
+	public DTO findAll() throws Exception {
+		return apartamentoService.listarApartamentos();
+	}
 
 }

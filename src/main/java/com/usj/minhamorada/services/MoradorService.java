@@ -123,7 +123,7 @@ public class MoradorService {
 			throw new Exception("Verifique ID do morador!");
 		}
 	}
-
+ 
 	void verificaCadastroCamposObrigatorios(Morador morador) throws Exception {
 		if (morador.isEmptyCPF()) {
 			statuscode = "400";
