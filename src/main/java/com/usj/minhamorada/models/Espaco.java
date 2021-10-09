@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-//@EqualsAndHashCode(exclude = {"apartamento"})
+@EqualsAndHashCode(exclude = {"agendamentoEspaco"})
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class Espaco {
@@ -21,14 +21,14 @@ public class Espaco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "nomeEspaco", nullable = false)
-//    @NotNull
-//    private String nomeEspaco;
-//
-//    @OneToOne(cascade = CascadeType.PERSIST)
-//    @JoinColumn (name = "agendamentoEspaco_id")
-//    @JsonIgnoreProperties("espaco")
-//    @ToString.Exclude
-//    private AgendamentoEspaco agendamentoEspaco;
+    @Column(name = "nomeEspaco", nullable = false)
+    @NotNull
+    private String nomeEspaco;
+
+    @OneToOne(mappedBy = "espaco", cascade = CascadeType.PERSIST)
+    @JoinColumn (name = "agendamentoEspaco_id")
+    @JsonIgnoreProperties("espaco")
+    @ToString.Exclude
+    private AgendamentoEspaco agendamentoEspaco;
 
 }

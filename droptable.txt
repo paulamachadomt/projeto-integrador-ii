@@ -1,2 +1,4 @@
 drop table apartamento;
 drop table morador;
+drop table espaco;
+drop table agendamento_espaco;

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-//@EqualsAndHashCode(exclude = {"apartamento"})
+@EqualsAndHashCode
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class AgendamentoEspaco {
@@ -27,19 +27,19 @@ public class AgendamentoEspaco {
     private LocalDate dataHoraAgendamento;
 
 
-//    //espaço
-//    @OneToOne(mappedBy = "agendamentoEspaco", cascade = CascadeType.PERSIST)
-//    @JoinColumn (name = "espaco_id")
-//    @JsonIgnoreProperties("agendamentoEspaco")
-//    @ToString.Exclude
-//    private Espaco espaco;
-//
-//
-//    //morador
-//    @OneToOne(mappedBy = "agendamentoEspaco", cascade = CascadeType.PERSIST)
-//    @JoinColumn (name = "morador_id")
-//    @JsonIgnoreProperties("agendamentoEspaco")
-//    @ToString.Exclude
-//    private Morador morador;
+    //espaçoo
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn (name = "espaco_id")
+    @JsonIgnoreProperties("agendamentoEspaco")
+    @ToString.Exclude
+    private Espaco espaco;
+
+
+    //morador
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn (name = "morador_id")
+    @JsonIgnoreProperties("agendamentoEspaco")
+    @ToString.Exclude
+    private Morador morador;
 
 }

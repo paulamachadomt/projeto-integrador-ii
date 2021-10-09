@@ -60,7 +60,13 @@ public class Morador  {
 	@JsonIgnoreProperties("morador")
 	@ToString.Exclude
 	private Apartamento apartamento;
-		
+
+	@OneToOne(mappedBy = "espaco", cascade = CascadeType.PERSIST)
+	@JoinColumn (name = "agendamentoEspaco_id")
+	@JsonIgnoreProperties("espaco")
+	@ToString.Exclude
+	private AgendamentoEspaco agendamentoEspaco;
+
 	@JsonIgnore
 	public boolean isEmptyCPF() {
 		return (cpf == null) ? true : false;			
