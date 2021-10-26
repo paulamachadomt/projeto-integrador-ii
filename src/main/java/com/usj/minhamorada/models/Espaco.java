@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "espaco")
@@ -25,10 +26,9 @@ public class Espaco {
     @NotNull
     private String nomeEspaco;
 
-    @OneToOne(mappedBy = "espaco", cascade = CascadeType.PERSIST)
-    @JoinColumn (name = "agendamentoEspaco_id")
+    @OneToMany(mappedBy = "espaco", cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties("espaco")
     @ToString.Exclude
-    private AgendamentoEspaco agendamentoEspaco;
+    private List<AgendamentoEspaco> agendamentoEspaco;
 
 }

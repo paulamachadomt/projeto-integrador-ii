@@ -1,14 +1,6 @@
 package com.usj.minhamorada.models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,6 +14,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "morador")
@@ -61,11 +55,11 @@ public class Morador  {
 	@ToString.Exclude
 	private Apartamento apartamento;
 
-	@OneToOne(mappedBy = "espaco", cascade = CascadeType.PERSIST)
-	@JoinColumn (name = "agendamentoEspaco_id")
-	@JsonIgnoreProperties("espaco")
+	@OneToMany(mappedBy = "morador", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+//	@JoinColumn (name = "agendamentoEspaco_id")
+	@JsonIgnoreProperties("morador")
 	@ToString.Exclude
-	private AgendamentoEspaco agendamentoEspaco;
+	private List<AgendamentoEspaco> agendamentoEspaco;
 
 	@JsonIgnore
 	public boolean isEmptyCPF() {

@@ -1,19 +1,20 @@
 package com.usj.minhamorada.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "AgendamentoEspaco")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"morador"})
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class AgendamentoEspaco {
@@ -24,11 +25,11 @@ public class AgendamentoEspaco {
 
     @Column (name = "dataHoraAgendamento", nullable = false)
     @NotNull
-    private LocalDate dataHoraAgendamento;
-
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    private LocalDateTime dataHoraAgendamento;
 
     //espaçoo
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn (name = "espaco_id")
     @JsonIgnoreProperties("agendamentoEspaco")
     @ToString.Exclude
@@ -36,7 +37,7 @@ public class AgendamentoEspaco {
 
 
     //morador
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn (name = "morador_id")
     @JsonIgnoreProperties("agendamentoEspaco")
     @ToString.Exclude

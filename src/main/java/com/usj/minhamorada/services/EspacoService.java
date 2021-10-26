@@ -51,7 +51,6 @@ public class EspacoService {
 
     public DTO deletarEspaco(Long id) {
         try {
-            Espaco espaco = readEspacoById(id);
             espacoRepository.deleteById(id);
             return response("Espaço deletado!");
         }
@@ -62,19 +61,13 @@ public class EspacoService {
 
     public DTO listarEspacos() {
         try {
-            List<Espaco> listaEspacos = new ArrayList<Espaco>();
-            listaEspacos = espacoRepository.findAll();
+            List<Espaco> listaEspacos = espacoRepository.findAll();
             return response(listaEspacos);
         }
         catch (Exception e) {
             return response(e.getMessage());
         }
     }
-
-
-
-
-
 
     public Espaco readEspacoById(Long id) throws Exception {
         try {
