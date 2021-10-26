@@ -32,5 +32,6 @@ public class DTO {
 	private AgendamentoEspaco agendamentoEspaco;
 	private List<AgendamentoEspaco> listaAgendamentosEspacos;
 	private Assembleia assembleia;
+	private List<Assembleia> listaAssembleias;
 
 }
