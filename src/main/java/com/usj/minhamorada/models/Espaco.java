@@ -31,4 +31,6 @@ public class Espaco {
     @ToString.Exclude
     private List<AgendamentoEspaco> agendamentoEspaco;
 
+    
+
 }
