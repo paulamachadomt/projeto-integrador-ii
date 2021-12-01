@@ -35,7 +35,7 @@ public class Assembleia {
 
     @Column(name = "data", nullable = false)
     @NotNull
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dataHora;
 
 }
