@@ -43,7 +43,6 @@ public class AssembleiaService {
             assembleia.setTitulo(request.getAssembleia().getTitulo());
             assembleia.setAta(request.getAssembleia().getAta());
             assembleia.setDataHora(request.getAssembleia().getDataHora());
-            assembleia.setPauta(request.getAssembleia().getPauta());
             assembleiaRepository.save(assembleia);
             return response(assembleia);
         }

@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,17 +29,13 @@ public class Assembleia {
     @NotNull
     private String titulo;
 
-    @Column(name = "pautaAssembleia", nullable = false)
-    @NotNull
-    private String pauta;
-
     @Column(name = "ata")
     @NotNull
     private String ata;
 
-    @Column(name = "dataHora", nullable = false)
+    @Column(name = "data", nullable = false)
     @NotNull
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
-    private LocalDateTime dataHora;
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private LocalDate dataHora;
 
 }
