@@ -55,7 +55,7 @@ public class Morador  {
 	@ToString.Exclude
 	private Apartamento apartamento;
 
-	@OneToMany(mappedBy = "morador", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "morador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	@JoinColumn (name = "agendamentoEspaco_id")
 	@JsonIgnoreProperties("morador")
 	@ToString.Exclude
