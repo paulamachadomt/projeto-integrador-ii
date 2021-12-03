@@ -1,6 +1,7 @@
 package com.usj.minhamorada.services;
 
 import com.usj.minhamorada.models.AgendamentoEspaco;
+import com.usj.minhamorada.models.Apartamento;
 import com.usj.minhamorada.models.Espaco;
 import com.usj.minhamorada.models.Morador;
 import com.usj.minhamorada.models.dto.DTO;
@@ -26,18 +27,23 @@ public class AgendamentoEspacoService {
     @Autowired
     private MoradorService moradorService;
 
+    private String statuscode = "200";
+
     public DTO cadastrarAgendamentoEspaco(DTO request) {
         try {
             AgendamentoEspaco agendamentoEspaco = request.getAgendamentoEspaco();
             Espaco espaco = espacoService.readEspacoById(request.getAgendamentoEspaco().getEspaco().getId());
             Morador morador = moradorService.readMoradorById(request.getAgendamentoEspaco().getMorador().getId());
+            //throwExceptionIfIdMoradorIsNotPresent(morador);
             agendamentoEspaco.setEspaco(espaco);
             agendamentoEspaco.setMorador(morador);
             agendamentoEspaco = agendamentoEspacoRepository.save(agendamentoEspaco);
+            statuscode = "200";
             return response(agendamentoEspaco);
         }
         catch (Exception e) {
-            return response(e.getMessage());
+            statuscode = "400";
+            return response(statuscode, e.getMessage());
         }
     }
 
@@ -96,9 +102,17 @@ public class AgendamentoEspacoService {
         }
     }
 
+    void throwExceptionIfIdMoradorIsNotPresent(Morador morador) throws Exception {
+        if (morador.getId() == null) {
+            throw new Exception("Morador não encontrado! Verifique e tente novamente!");
+        }
+    }
+
     DTO response(AgendamentoEspaco agendamentoEspaco) { return DTO.builder().agendamentoEspaco(agendamentoEspaco).build(); }
 
     DTO response(String mensagem) { return DTO.builder().mensagem(mensagem).build(); }
+
+    DTO response(String statuscode, String mensagem) { return DTO.builder().statusCode(statuscode).mensagem(mensagem).build(); }
 
     DTO response(List<AgendamentoEspaco> listaAgendamentosEspacos) {
         return DTO.builder().listaAgendamentosEspacos(listaAgendamentosEspacos).build();
